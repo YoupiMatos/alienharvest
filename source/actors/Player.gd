@@ -3,7 +3,8 @@ extends KinematicBody2D
 # Player var
 export var speed: = 600
 
-onready var dodge_timer = $Timer
+onready var dodge_timer = $DodgeTimer
+onready var shoot_timer = $ShootTimer
 onready var end_of_gun = $shoot
 onready var health = $CanvasLayer/Health
 
@@ -18,7 +19,10 @@ var is_dodging : bool = false
 var dodge_direction: Vector2
 var invicible: bool = false
 
+var can_shoot: bool = true
+
 var hp: int = 5
+var egg_count: int = 0
 
 # Bullet var
 var bullet_speed = 3000
@@ -32,6 +36,8 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
+	$CanvasLayer/EggCount.text = "Eggs : %s" % egg_count
+	
 	health.frame = hp
 	#warning-ignore:return_value_discarded
 	
@@ -66,8 +72,10 @@ func manage_input():
 		is_dodging = true
 		dodge_direction = motion
 		dodge_timer.start()
-	if Input.is_action_just_pressed("fire"):
+	if Input.is_action_just_pressed("fire") and can_shoot:
 		fire()
+		can_shoot = false
+		shoot_timer.start()
 		
 	if is_dodging:
 		speed = 1200
@@ -81,11 +89,20 @@ func take_damage():
 	$Sprite.modulate = Color(255, 0, 0)
 	hp -= 1
 
+func get_egg():
+	egg_count += 1
+
 func _on_Timer_timeout():
 	is_dodging = false
+	
+func _on_ShootTimer_timeout() -> void:
+	can_shoot = true
 
 
 func _on_Hurtbox_body_entered(body: Node) -> void:
 	if body.is_in_group("enemy") and !invicible:
 		print("hurt")
 		take_damage()
+
+
+

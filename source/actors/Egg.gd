@@ -25,6 +25,7 @@ func _on_Node2D_body_entered(body: Node) -> void:
 		label.visible = true
 		$Sprite.visible = false
 		$LabelTimer.start()
+		body.get_egg()
 
 
 func _on_LabelTimer_timeout() -> void:

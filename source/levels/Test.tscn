@@ -5,7 +5,9 @@
 [ext_resource path="res://assets/background/PROTOTYPE 1.png" type="Texture" id=3]
 [ext_resource path="res://source/actors/Egg.tscn" type="PackedScene" id=4]
 
-[node name="Node2D" type="Node2D"]
+[node name="Test" type="Node2D"]
+
+[node name="Objectives" type="Node" parent="."]
 
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 3508.0
@@ -28,5 +30,3 @@ position = Vector2( 3724, 1265 )
 
 [node name="KinematicBody2D" parent="Node" instance=ExtResource( 2 )]
 position = Vector2( 3217, 1205 )
-
-[editable path="Player"]
