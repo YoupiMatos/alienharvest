@@ -19,7 +19,7 @@ var dodge_direction
 
 # Bullet var
 var bullet_speed = 2000
-var bullet = preload("res://Bullet.tscn")
+var bullet = preload("res://source/actors/Bullet.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

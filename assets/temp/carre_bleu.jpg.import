@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/carre_bleu.jpg-01e5b18ccc06705fed9ab29022f8096a.stex"
+path="res://.import/carre_bleu.jpg-d30c831f32abb8f5415efc66a90d7eb6.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://carre_bleu.jpg"
-dest_files=[ "res://.import/carre_bleu.jpg-01e5b18ccc06705fed9ab29022f8096a.stex" ]
+source_file="res://assets/temp/carre_bleu.jpg"
+dest_files=[ "res://.import/carre_bleu.jpg-d30c831f32abb8f5415efc66a90d7eb6.stex" ]
 
 [params]
 

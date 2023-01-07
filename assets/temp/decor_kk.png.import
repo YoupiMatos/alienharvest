@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/decor_kk.png-3f42464d0105b6ec4e249f2b1b534b8c.stex"
+path="res://.import/decor_kk.png-0494021cdcbc4d29cee9e802580b923c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://decor_kk.png"
-dest_files=[ "res://.import/decor_kk.png-3f42464d0105b6ec4e249f2b1b534b8c.stex" ]
+source_file="res://assets/temp/decor_kk.png"
+dest_files=[ "res://.import/decor_kk.png-0494021cdcbc4d29cee9e802580b923c.stex" ]
 
 [params]
 
