@@ -17,3 +17,7 @@ func _ready() -> void:
 
 func play_shot():
 	$AnimationPlayer.play("shoot")
+
+
+func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
+	queue_free()

@@ -4,8 +4,8 @@
 [ext_resource path="res://source/actors/Bitonio.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 55.0
-height = 96.0
+radius = 31.9998
+height = 72.0001
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 391.082
@@ -64,28 +64,26 @@ script = ExtResource( 2 )
 scale = Vector2( 4, 4 )
 texture = ExtResource( 1 )
 hframes = 4
-frame = 2
+frame = 3
 
-[node name="Hurtbox" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( -1, 37 )
+[node name="Hitbox2" type="CollisionShape2D" parent="."]
+position = Vector2( 3, 4 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Attackbox" type="Area2D" parent="." groups=["enemy"]]
-visible = false
 
 [node name="Attackbox" type="CollisionShape2D" parent="Attackbox"]
 shape = SubResource( 2 )
 
 [node name="AttackTimer" type="Timer" parent="Attackbox"]
 
-[node name="Hitbox" type="Area2D" parent="."]
-visible = false
+[node name="Hitbox" type="Area2D" parent="." groups=["enemy"]]
 position = Vector2( -1, 37 )
 rotation = 1.5708
 
 [node name="Hitbox" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( -33, -4.99988 )
 shape = SubResource( 1 )
 
 [node name="KnockbackTimer" type="Timer" parent="Hitbox"]
@@ -96,7 +94,13 @@ autoplay = "walk"
 anims/knocked = SubResource( 4 )
 anims/walk = SubResource( 3 )
 
+[node name="FollowPlayerTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="body_entered" from="Attackbox" to="." method="_on_Attackbox_body_entered"]
 [connection signal="timeout" from="Attackbox/AttackTimer" to="." method="_on_AttackTimer_timeout"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
+[connection signal="area_exited" from="Hitbox" to="." method="_on_Hitbox_area_exited"]
 [connection signal="timeout" from="Hitbox/KnockbackTimer" to="." method="_on_KnockbackTimer_timeout"]
+[connection signal="timeout" from="FollowPlayerTimer" to="." method="_on_FollowPlayerTimer_timeout"]

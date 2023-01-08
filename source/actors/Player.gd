@@ -1,7 +1,8 @@
 extends KinematicBody2D
 
-# Player var
+export var base_speed: = 900
 export var speed: = 900
+export var dodge_speed: = 1200
 
 onready var objective = get_tree().get_nodes_in_group("level")[0].objective
 
@@ -10,26 +11,25 @@ onready var shoot_timer = $ShootTimer
 onready var end_of_gun = $shoot
 onready var health = $CanvasLayer/Health
 onready var eggs_label = $CanvasLayer/EggCount
+onready var anim_player = $AnimationPlayer
 
-var inputs = {
-	"right": Vector2.RIGHT,
-	"left": Vector2.LEFT,
-	"up": Vector2.UP,
-	"down": Vector2.DOWN
-}
+var inputs = [
+	"right",
+	"left",
+	"up",
+	"down"
+]
+
 var motion : Vector2 = Vector2()
-var is_dodging : bool = false
 var dodge_direction: Vector2
-var invicible: bool = false
 
+var invicible: bool = false
+var is_dodging : bool = false
 var can_shoot: bool = true
 
 var hp: int = 5
 var egg_count: int = 0
 
-# Bullet var
-var bullet_speed = 3000
-var bullet = preload("res://source/actors/Bullet.tscn")
 var blaster_shot = preload("res://source/actors/BlasterShot.tscn")
 
 # Called when the node enters the scene tree for the first time.
@@ -43,6 +43,7 @@ func _physics_process(_delta):
 		eggs_label.text = "You've got all eggs. Return to base!"
 	else: eggs_label.text = "Eggs : %s" % egg_count
 	
+	# health bar
 	health.frame = hp
 	#warning-ignore:return_value_discarded
 	
@@ -50,17 +51,14 @@ func _physics_process(_delta):
 	motion = motion.normalized() * speed
 	move_and_slide(motion)
 	
-	var look_vec = get_global_mouse_position() - global_position
-	global_rotation = atan2(look_vec.y, look_vec.x)
-	
 	manage_input()
 
 
-
 func fire():
+	var look_vec = get_global_mouse_position() - global_position
 	var blaster_shot_instance = blaster_shot.instance()
 	blaster_shot_instance.global_position = end_of_gun.global_position
-	blaster_shot_instance.rotation = rotation
+	blaster_shot_instance.rotation = atan2(look_vec.y, look_vec.x)
 	blaster_shot_instance.play_shot()
 	
 	get_tree().get_root().call_deferred("add_child", blaster_shot_instance)
@@ -75,10 +73,15 @@ func manage_input():
 		can_shoot = false
 		shoot_timer.start()
 		
+	# walk in correct direction
+	for input in inputs:
+		if Input.is_action_pressed(input):
+			anim_player.play("walk_" + input)
+		
 	if is_dodging:
-		speed = 1200
+		speed = dodge_speed
 	else:
-		speed = 600
+		speed = base_speed
 		motion.x = Input.get_action_strength("right") - Input.get_action_strength("left")
 		motion.y = Input.get_action_strength("down") - Input.get_action_strength("up")
 		motion.y /= 2
@@ -89,6 +92,7 @@ func take_damage():
 
 func get_egg():
 	egg_count += 1
+
 
 func _on_Timer_timeout():
 	is_dodging = false
@@ -101,6 +105,3 @@ func _on_Hurtbox_body_entered(body: Node) -> void:
 	if body.is_in_group("enemy") and !invicible:
 		print("hurt")
 		take_damage()
-
-
-
