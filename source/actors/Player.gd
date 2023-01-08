@@ -1,12 +1,15 @@
 extends KinematicBody2D
 
 # Player var
-export var speed: = 600
+export var speed: = 900
+
+onready var objective = get_tree().get_nodes_in_group("level")[0].objective
 
 onready var dodge_timer = $DodgeTimer
 onready var shoot_timer = $ShootTimer
 onready var end_of_gun = $shoot
 onready var health = $CanvasLayer/Health
+onready var eggs_label = $CanvasLayer/EggCount
 
 var inputs = {
 	"right": Vector2.RIGHT,
@@ -36,7 +39,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
-	$CanvasLayer/EggCount.text = "Eggs : %s" % egg_count
+	if egg_count == objective:
+		eggs_label.text = "You've got all eggs. Return to base!"
+	else: eggs_label.text = "Eggs : %s" % egg_count
 	
 	health.frame = hp
 	#warning-ignore:return_value_discarded
@@ -59,13 +64,6 @@ func fire():
 	blaster_shot_instance.play_shot()
 	
 	get_tree().get_root().call_deferred("add_child", blaster_shot_instance)
-#	var bullet_instance = bullet.instance()
-#	bullet_instance.global_position = end_of_gun.global_position
-#	var target = get_global_mouse_position()
-#	var direction_to_mouse = bullet_instance.position.direction_to(target).normalized()
-#	bullet_instance.set_direction(direction_to_mouse)
-	
-#	get_tree().get_root().call_deferred("add_child", bullet_instance)
 
 func manage_input():
 	if Input.is_action_just_pressed("dodge"):
