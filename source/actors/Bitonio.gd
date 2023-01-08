@@ -19,13 +19,21 @@ var attack_direction: Vector2
 var motion: Vector2 = Vector2.ZERO
 var knockback: Vector2
 
+var texture1 = preload("res://assets/ennemies/bitonio_BLUE.png")
+var texture2 = preload("res://assets/ennemies/bitonio_ORANGE.png")
+var texture3 = preload("res://assets/ennemies/bitonio_ROSE.png")
+var texture4 = preload("res://assets/ennemies/bitonio_VERT.png")
+var textures = [texture1, texture2, texture3, texture4]
+
 export var speed: int = 300
 export var knockback_speed: int = 1000
 
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	randomize()
+	sprite.texture = textures[randi() % 4]
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -35,18 +43,19 @@ func _process(delta: float) -> void:
 		sprite.flip_h = true
 	else: sprite.flip_h = false
 	
-	if nest.player_in_nest or following_player:
-		if follow_timer.time_left == 0:
-			follow_timer.start()
-			following_player = true
-		if !is_attacking and !is_knocked_back:
-			motion = global_position.direction_to(player.global_position) * speed
-	else:
-		if !in_nest and !is_attacking:
-			# go toward nest
-			motion = global_position.direction_to(nest.global_position) * speed
+	if nest is Area2D:
+		if nest.player_in_nest or following_player:
+			if follow_timer.time_left == 0:
+				follow_timer.start()
+				following_player = true
+			if !is_attacking and !is_knocked_back:
+				motion = global_position.direction_to(player.global_position) * speed
 		else:
-			pass
+			if !in_nest and !is_attacking:
+				# go toward nest
+				motion = global_position.direction_to(nest.global_position) * speed
+			else:
+				pass
 		
 	move_and_slide(motion)
 
@@ -58,7 +67,7 @@ func roam():
 func _on_Attackbox_body_entered(body: Node) -> void:
 	if !is_attacking and body.is_in_group("player"):
 		is_attacking = true
-		speed = 1000
+		speed = 1200
 		motion = global_position.direction_to(player.position) * speed
 		attack_direction = motion
 		attack_timer.start()

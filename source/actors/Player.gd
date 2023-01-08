@@ -1,8 +1,10 @@
 extends KinematicBody2D
 
-export var base_speed: = 900
-export var speed: = 900
-export var dodge_speed: = 1200
+
+export var base_speed: int = 600
+export var speed: int = base_speed
+export var dodge_speed: int = 1200
+export var shot_type: = "blaster"
 
 onready var objective = get_tree().get_nodes_in_group("level")[0].objective
 
@@ -12,6 +14,8 @@ onready var end_of_gun = $shoot
 onready var health = $CanvasLayer/Health
 onready var eggs_label = $CanvasLayer/EggCount
 onready var anim_player = $AnimationPlayer
+onready var anim_sprite = $AnimatedSprite
+onready var camera = $Camera2D
 
 var inputs = [
 	"right",
@@ -31,10 +35,17 @@ var hp: int = 5
 var egg_count: int = 0
 
 var blaster_shot = preload("res://source/actors/BlasterShot.tscn")
+var electric_shot = preload("res://source/actors/ElectricShot.tscn")
+var shotgun_shot = preload("res://source/actors/ShotgunShot.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	if shot_type == "blaster":
+		shoot_timer.wait_time = 3
+	if shot_type == "eletric":
+		shoot_timer.wait_time = 2
+	if shot_type == "shotgun":
+		shoot_timer.wait_time = 1
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,17 +62,37 @@ func _physics_process(_delta):
 	motion = motion.normalized() * speed
 	move_and_slide(motion)
 	
+	var mouse_offset = (get_viewport().get_mouse_position() - get_viewport().size / 2)
+	camera.position = lerp(Vector2(), mouse_offset.normalized() * 500, mouse_offset.length() / 1000)
+	
 	manage_input()
 
 
 func fire():
-	var look_vec = get_global_mouse_position() - global_position
-	var blaster_shot_instance = blaster_shot.instance()
-	blaster_shot_instance.global_position = end_of_gun.global_position
-	blaster_shot_instance.rotation = atan2(look_vec.y, look_vec.x)
-	blaster_shot_instance.play_shot()
-	
-	get_tree().get_root().call_deferred("add_child", blaster_shot_instance)
+	var shot_instance
+	if shot_type:
+		var look_vec = get_global_mouse_position() - global_position
+		if shot_type == "electric":
+			shot_instance = electric_shot.instance()
+			shot_instance.set_direction(look_vec)
+			shot_instance.global_position = end_of_gun.global_position
+			shot_instance.rotation = atan2(look_vec.y, look_vec.x)
+			get_tree().get_root().call_deferred("add_child", shot_instance)
+			
+		elif shot_type == "blaster":
+			shot_instance = blaster_shot.instance()
+			shot_instance.global_position = end_of_gun.global_position
+			shot_instance.rotation = atan2(look_vec.y, look_vec.x)
+			get_tree().get_root().call_deferred("add_child", shot_instance)
+			
+		elif shot_type == "shotgun":
+			for angle in [-17, -13, -7, 0, 7, 13, 17]:
+				var radians = deg2rad(angle)
+				shot_instance = shotgun_shot.instance()
+				shot_instance.global_position = end_of_gun.global_position
+				shot_instance.set_direction(look_vec.rotated(radians))
+				add_child(shot_instance)
+			shot_instance.timer.start()
 
 func manage_input():
 	if Input.is_action_just_pressed("dodge"):
@@ -76,7 +107,8 @@ func manage_input():
 	# walk in correct direction
 	for input in inputs:
 		if Input.is_action_pressed(input):
-			anim_player.play("walk_" + input)
+			anim_sprite.play("walk_" + input)
+			break
 		
 	if is_dodging:
 		speed = dodge_speed
@@ -87,7 +119,6 @@ func manage_input():
 		motion.y /= 2
 
 func take_damage():
-	$Sprite.modulate = Color(255, 0, 0)
 	hp -= 1
 
 func get_egg():

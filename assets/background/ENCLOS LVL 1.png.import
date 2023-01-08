@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/decor_kk.png-0494021cdcbc4d29cee9e802580b923c.stex"
+path="res://.import/ENCLOS LVL 1.png-f564e7dab522be43092be3daeeb02ae8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/temp/decor_kk.png"
-dest_files=[ "res://.import/decor_kk.png-0494021cdcbc4d29cee9e802580b923c.stex" ]
+source_file="res://assets/background/ENCLOS LVL 1.png"
+dest_files=[ "res://.import/ENCLOS LVL 1.png-f564e7dab522be43092be3daeeb02ae8.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
