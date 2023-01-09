@@ -10,7 +10,7 @@ onready var timer = $IlluminationTimer
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	set_as_toplevel(true)
-	canvas_mod.set_color(Color(255, 255, 255, 255))
+	canvas_mod.set_color(Color("c4c4c4"))
 
 
 func _process(delta: float) -> void:
@@ -21,4 +21,4 @@ func set_direction(new_direction: Vector2):
 
 
 func _on_IlluminationTimer_timeout() -> void:
-	canvas_mod.set_color(Color(44, 44, 44, 255))
+	canvas_mod.set_color(Color("2c2c2c"))

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/PETITE_PLANTE_SHEET.png-33d0530ebf70e7642aab3781fdd76077.stex"
+path="res://.import/fusil elektrik.png-e58040d9de3174d0e9c7832c22a4f9d0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/decor/PETITE_PLANTE_SHEET.png"
-dest_files=[ "res://.import/PETITE_PLANTE_SHEET.png-33d0530ebf70e7642aab3781fdd76077.stex" ]
+source_file="res://assets/items/fusil elektrik.png"
+dest_files=[ "res://.import/fusil elektrik.png-e58040d9de3174d0e9c7832c22a4f9d0.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

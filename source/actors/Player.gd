@@ -10,12 +10,19 @@ onready var objective = get_tree().get_nodes_in_group("level")[0].objective
 
 onready var dodge_timer = $DodgeTimer
 onready var shoot_timer = $ShootTimer
-onready var end_of_gun = $shoot
+onready var end_of_gun = $Weapon/shoot
 onready var health = $CanvasLayer/Health
 onready var eggs_label = $CanvasLayer/EggCount
 onready var anim_player = $AnimationPlayer
 onready var anim_sprite = $AnimatedSprite
 onready var camera = $Camera2D
+onready var weapon = $Weapon
+
+var weapons = {
+	"shotgun": preload("res://assets/items/shotgun.png"),
+	"blaster": preload("res://assets/items/blaster.png"),
+	"electric": preload("res://assets/items/fusil elektrik.png")
+}
 
 var inputs = [
 	"right",
@@ -40,12 +47,16 @@ var shotgun_shot = preload("res://source/actors/ShotgunShot.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	if shot_type == "blaster":
 		shoot_timer.wait_time = 3
-	if shot_type == "eletric":
+		weapon.texture = weapons[shot_type]
+	elif shot_type == "eletric":
 		shoot_timer.wait_time = 2
-	if shot_type == "shotgun":
+		weapon.texture = weapons[shot_type]
+	elif shot_type == "shotgun":
 		shoot_timer.wait_time = 1
+		weapon.texture = weapons[shot_type]
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -62,11 +73,32 @@ func _physics_process(_delta):
 	motion = motion.normalized() * speed
 	move_and_slide(motion)
 	
+	if motion == Vector2(0,0):
+		anim_sprite.play("idle")
+		weapon.position = Vector2(-52, 35)
+		weapon.z_index = 0
+	
 	var mouse_offset = (get_viewport().get_mouse_position() - get_viewport().size / 2)
 	camera.position = lerp(Vector2(), mouse_offset.normalized() * 500, mouse_offset.length() / 1000)
 	
 	manage_input()
+	manage_gun()
 
+
+func manage_gun():
+	var look_vec = get_global_mouse_position() - global_position
+	weapon.rotation = atan2(look_vec.y, look_vec.x)
+	if Input.is_action_pressed("left") or Input.is_action_pressed("up"):
+		weapon.z_index = -1
+		weapon.position = Vector2(52, 47)
+	elif Input.is_action_pressed("right") or Input.is_action_pressed("down"):
+		weapon.z_index = 0
+		weapon.position = Vector2(-52, 35)
+	
+	if weapon.rotation_degrees < -90.0 or weapon.rotation_degrees > 90:
+		weapon.flip_v = true
+	else: 
+		weapon.flip_v = false
 
 func fire():
 	var shot_instance
@@ -106,8 +138,9 @@ func manage_input():
 		
 	# walk in correct direction
 	for input in inputs:
-		if Input.is_action_pressed(input):
-			anim_sprite.play("walk_" + input)
+		if Input.is_action_just_pressed(input):
+			if !anim_sprite.animation == "walk_" + input:
+				anim_sprite.play("walk_" + input)
 			break
 		
 	if is_dodging:
