@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/AMBIANT ALIEN HARVEST.mp3-bc389c6fd32530dbae2be6f52a1e7a95.mp3str"
+
+[deps]
+
+source_file="res://assets/sound/music/AMBIANT ALIEN HARVEST.mp3"
+dest_files=[ "res://.import/AMBIANT ALIEN HARVEST.mp3-bc389c6fd32530dbae2be6f52a1e7a95.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

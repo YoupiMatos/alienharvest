@@ -1,0 +1,86 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/background/entree de la GROTTE LV3.png" type="Texture" id=1]
+[ext_resource path="res://source/actors/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://source/levels/Level3_intro.gd" type="Script" id=3]
+[ext_resource path="res://assets/sound/effects/wind1.wav" type="AudioStream" id=4]
+[ext_resource path="res://source/levels/LevelChangerSpecial.tscn" type="PackedScene" id=5]
+[ext_resource path="res://source/decor/PetitePlante.tscn" type="PackedScene" id=10]
+[ext_resource path="res://source/decor/GrandePlante.tscn" type="PackedScene" id=11]
+
+[node name="Level3Intro" type="Node2D" groups=["level"]]
+script = ExtResource( 3 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 640.0
+margin_bottom = 480.0
+rect_scale = Vector2( 6, 6 )
+texture = ExtResource( 1 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 209, 880 )
+shot_type = "shotgun"
+
+[node name="Camera2D" parent="Player" index="5"]
+limit_right = 3840
+limit_bottom = 2200
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+autoplay = true
+
+[node name="LevelChanger" parent="." instance=ExtResource( 5 )]
+position = Vector2( 3413, 1580 )
+target_level = "res://source/levels/Level3.tscn"
+
+[node name="decor" type="Node" parent="."]
+
+[node name="GrandePlante" parent="decor" instance=ExtResource( 11 )]
+position = Vector2( 901, 1024 )
+
+[node name="GrandePlante2" parent="decor" instance=ExtResource( 11 )]
+position = Vector2( 3101, 1956 )
+
+[node name="GrandePlante3" parent="decor" instance=ExtResource( 11 )]
+position = Vector2( 2093, 1144 )
+
+[node name="GrandePlante7" parent="decor" instance=ExtResource( 11 )]
+position = Vector2( 541, 1212 )
+
+[node name="GrandePlante4" parent="decor" instance=ExtResource( 11 )]
+position = Vector2( 3769, 2356 )
+
+[node name="GrandePlante5" parent="decor" instance=ExtResource( 11 )]
+position = Vector2( 2297, 2220 )
+
+[node name="GrandePlante6" parent="decor" instance=ExtResource( 11 )]
+position = Vector2( 1281, 1536 )
+
+[node name="PetitePlante" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 2333, 1512 )
+
+[node name="PetitePlante2" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 2313, 852 )
+
+[node name="PetitePlante5" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 989, 1376 )
+
+[node name="PetitePlante6" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 725, 2264 )
+
+[node name="PetitePlante7" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 469, 752 )
+
+[node name="PetitePlante8" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 1681, 956 )
+
+[node name="PetitePlante9" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 3753, 1820 )
+
+[node name="PetitePlante3" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 505, 1888 )
+
+[node name="PetitePlante4" parent="decor" instance=ExtResource( 10 )]
+position = Vector2( 2169, 2296 )
+
+[editable path="Player"]

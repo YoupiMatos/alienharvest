@@ -19,6 +19,8 @@ func _ready() -> void:
 func _on_Note_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
 		$Sprite.visible = true
+		Autoload.base_complete = true
+		body.objective_complete = true
 
 
 func _on_Note_body_exited(body: Node) -> void:

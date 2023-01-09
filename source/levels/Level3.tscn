@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://source/levels/Level3.gd" type="Script" id=1]
+[ext_resource path="res://source/actors/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/background/GROTTE.png" type="Texture" id=3]
+[ext_resource path="res://assets/temp/light.png" type="Texture" id=4]
+[ext_resource path="res://source/actors/AgressiveAlien.tscn" type="PackedScene" id=5]
+[ext_resource path="res://source/actors/GoldenEgg.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/sound/effects/dungeon_ambient_1.ogg" type="AudioStream" id=7]
+[ext_resource path="res://source/levels/LevelChanger.tscn" type="PackedScene" id=9]
+
+[node name="Level3" type="Node2D" groups=["level"]]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_vertical_guides_": [ 9533.0 ]
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 640.0
+margin_bottom = 480.0
+rect_scale = Vector2( 6, 6 )
+texture = ExtResource( 3 )
+
+[node name="AgressiveAlien" parent="." instance=ExtResource( 5 )]
+position = Vector2( 7202, 1555 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 209, 880 )
+shot_type = "shotgun"
+
+[node name="Camera2D" parent="Player" index="5"]
+limit_right = 7680
+limit_bottom = 2880
+
+[node name="Light2D" type="Light2D" parent="Player"]
+texture = ExtResource( 4 )
+
+[node name="LevelChanger" parent="." instance=ExtResource( 9 )]
+position = Vector2( 177, 904 )
+target_level = "res://source/levels/EndScreen.tscn"
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." groups=["canvas_mod"]]
+color = Color( 0.172549, 0.172549, 0.172549, 1 )
+
+[node name="Egg" parent="." instance=ExtResource( 6 )]
+position = Vector2( 7515, 1572 )
+
+[node name="Light2D" type="Light2D" parent="Egg"]
+texture = ExtResource( 4 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+autoplay = true
+
+[editable path="Player"]

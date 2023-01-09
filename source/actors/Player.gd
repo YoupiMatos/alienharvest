@@ -17,6 +17,7 @@ onready var anim_player = $AnimationPlayer
 onready var anim_sprite = $AnimatedSprite
 onready var camera = $Camera2D
 onready var weapon = $Weapon
+onready var gunsound = $GunSound
 
 var weapons = {
 	"shotgun": preload("res://assets/items/shotgun.png"),
@@ -37,6 +38,7 @@ var dodge_direction: Vector2
 var invicible: bool = false
 var is_dodging : bool = false
 var can_shoot: bool = true
+var objective_complete: bool = false
 
 var hp: int = 5
 var egg_count: int = 0
@@ -45,29 +47,40 @@ var blaster_shot = preload("res://source/actors/BlasterShot.tscn")
 var electric_shot = preload("res://source/actors/ElectricShot.tscn")
 var shotgun_shot = preload("res://source/actors/ShotgunShot.tscn")
 
+var blaster_sound = preload("res://assets/sound/effects/blaster.wav")
+var electric_sound = preload("res://assets/sound/effects/electricgun.wav")
+var shotgun_sound = preload("res://assets/sound/effects/shotgun.wav")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
 	if shot_type == "blaster":
-		shoot_timer.wait_time = 3
-		weapon.texture = weapons[shot_type]
-	elif shot_type == "eletric":
 		shoot_timer.wait_time = 2
 		weapon.texture = weapons[shot_type]
+		gunsound.stream = blaster_sound
+	elif shot_type == "electric":
+		shoot_timer.wait_time = 1
+		weapon.texture = weapons[shot_type]
+		gunsound.stream = electric_sound
 	elif shot_type == "shotgun":
 		shoot_timer.wait_time = 1
 		weapon.texture = weapons[shot_type]
+		gunsound.stream = shotgun_sound
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
 	if egg_count == objective:
 		eggs_label.text = "You've got all eggs. Return to base!"
+		objective_complete = true
 	else: eggs_label.text = "Eggs : %s" % egg_count
 	
 	# health bar
 	health.frame = hp
 	#warning-ignore:return_value_discarded
+	
+	if hp <= 0:
+		die()
 	
 	# Pour pas aller plus vite en diagonale
 	motion = motion.normalized() * speed
@@ -85,15 +98,16 @@ func _physics_process(_delta):
 	manage_gun()
 
 
+func die():
+	get_tree().change_scene("res://source/levels/YouDied.tscn")
+
 func manage_gun():
 	var look_vec = get_global_mouse_position() - global_position
 	weapon.rotation = atan2(look_vec.y, look_vec.x)
-	if Input.is_action_pressed("left") or Input.is_action_pressed("up"):
+	if Input.is_action_pressed("up"):
 		weapon.z_index = -1
-		weapon.position = Vector2(52, 47)
-	elif Input.is_action_pressed("right") or Input.is_action_pressed("down"):
+	elif Input.is_action_pressed("right") or Input.is_action_pressed("down") or Input.is_action_pressed("left"):
 		weapon.z_index = 0
-		weapon.position = Vector2(-52, 35)
 	
 	if weapon.rotation_degrees < -90.0 or weapon.rotation_degrees > 90:
 		weapon.flip_v = true
@@ -103,6 +117,7 @@ func manage_gun():
 func fire():
 	var shot_instance
 	if shot_type:
+		gunsound.play()
 		var look_vec = get_global_mouse_position() - global_position
 		if shot_type == "electric":
 			shot_instance = electric_shot.instance()
@@ -138,7 +153,7 @@ func manage_input():
 		
 	# walk in correct direction
 	for input in inputs:
-		if Input.is_action_just_pressed(input):
+		if Input.is_action_pressed(input):
 			if !anim_sprite.animation == "walk_" + input:
 				anim_sprite.play("walk_" + input)
 			break
@@ -168,4 +183,18 @@ func _on_ShootTimer_timeout() -> void:
 func _on_Hurtbox_body_entered(body: Node) -> void:
 	if body.is_in_group("enemy") and !invicible:
 		print("hurt")
+		invicible = true
+		$InvicibleTimer.start()
 		take_damage()
+
+
+func _on_Hurtbox_area_entered(area: Area2D) -> void:
+	if area.is_in_group("enemy") and !invicible:
+		print("hurt")
+		invicible = true
+		$InvicibleTimer.start()
+		take_damage()
+
+
+func _on_InvicibleTimer_timeout() -> void:
+	invicible = false

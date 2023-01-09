@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/bitonio.mp3-a21637f323b1fbf016209931981b90a4.mp3str"
+
+[deps]
+
+source_file="res://assets/sound/effects/bitonio.mp3"
+dest_files=[ "res://.import/bitonio.mp3-a21637f323b1fbf016209931981b90a4.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

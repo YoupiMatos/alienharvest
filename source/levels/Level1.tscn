@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://source/levels/Level1.gd" type="Script" id=1]
 [ext_resource path="res://assets/background/ENCLOS LVL 1.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://assets/decor/BARRIERE BAS.png" type="Texture" id=8]
 [ext_resource path="res://assets/decor/BARRIERE MILIEU.png" type="Texture" id=9]
 [ext_resource path="res://source/actors/Egg.tscn" type="PackedScene" id=10]
+[ext_resource path="res://source/levels/LevelChanger.tscn" type="PackedScene" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1883, 62 )
@@ -28,6 +29,9 @@ extents = Vector2( 716, 18 )
 
 [node name="Level1" type="Node2D" groups=["level"]]
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 2880.0 ]
+}
 
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 40.0
@@ -38,6 +42,13 @@ texture = ExtResource( 2 )
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 284, 1051 )
 shot_type = "blaster"
+
+[node name="AnimatedSprite" parent="Player" index="1"]
+frame = 1
+
+[node name="Camera2D" parent="Player" index="5"]
+limit_right = 3840
+limit_bottom = 2880
 
 [node name="Collisions" type="StaticBody2D" parent="."]
 
@@ -134,8 +145,53 @@ position = Vector2( -223, 26 )
 [node name="GrandePlante" parent="Decor" instance=ExtResource( 7 )]
 position = Vector2( 2184, 1804 )
 
+[node name="GrandePlante2" parent="Decor" instance=ExtResource( 7 )]
+position = Vector2( 656, 1220 )
+
+[node name="GrandePlante3" parent="Decor" instance=ExtResource( 7 )]
+position = Vector2( 3644, 1624 )
+
+[node name="GrandePlante5" parent="Decor" instance=ExtResource( 7 )]
+position = Vector2( 2004, 1072 )
+
+[node name="GrandePlante6" parent="Decor" instance=ExtResource( 7 )]
+position = Vector2( 2232, 2596 )
+
+[node name="GrandePlante4" parent="Decor" instance=ExtResource( 7 )]
+position = Vector2( 196, 2256 )
+
 [node name="PetitePlante" parent="Decor" instance=ExtResource( 4 )]
 position = Vector2( 2086, 1858 )
+
+[node name="PetitePlante8" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 2698, 1262 )
+
+[node name="PetitePlante9" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 2382, 2058 )
+
+[node name="PetitePlante10" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 510, 1678 )
+
+[node name="PetitePlante11" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 1626, 1570 )
+
+[node name="PetitePlante7" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 1462, 2274 )
+
+[node name="PetitePlante6" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 2126, 1134 )
+
+[node name="PetitePlante3" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 366, 2642 )
+
+[node name="PetitePlante4" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 266, 2590 )
+
+[node name="PetitePlante5" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 3646, 1154 )
+
+[node name="PetitePlante2" parent="Decor" instance=ExtResource( 4 )]
+position = Vector2( 3378, 2582 )
 
 [node name="BarriereBas" type="Sprite" parent="Decor"]
 position = Vector2( 1921, 3374 )
@@ -149,5 +205,10 @@ scale = Vector2( 6, 6 )
 z_index = 5
 texture = ExtResource( 9 )
 
+[node name="LevelChanger" parent="." instance=ExtResource( 11 )]
+position = Vector2( 247, 1016 )
+target_level = "res://source/levels/Map.tscn"
+
+[editable path="Player"]
 [editable path="Bitonios/BitonioNest"]
 [editable path="Bitonios/BitonioNest3"]

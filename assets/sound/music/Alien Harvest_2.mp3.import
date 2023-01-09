@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Alien Harvest_2.mp3-322d826a9a219b3aa1cc280186ee646b.mp3str"
+
+[deps]
+
+source_file="res://assets/sound/music/Alien Harvest_2.mp3"
+dest_files=[ "res://.import/Alien Harvest_2.mp3-322d826a9a219b3aa1cc280186ee646b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

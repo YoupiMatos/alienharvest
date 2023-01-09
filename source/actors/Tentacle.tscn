@@ -1,41 +1,130 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=25 format=2]
 
-[ext_resource path="res://assets/ennemies/tentacle_wip.png" type="Texture" id=1]
+[ext_resource path="res://assets/ennemies/Sprite-TENTACLE.png" type="Texture" id=1]
 [ext_resource path="res://source/actors/Tentacle.gd" type="Script" id=2]
+[ext_resource path="res://assets/ennemies/Tentacle_Stun_Sheet.png" type="Texture" id=3]
+[ext_resource path="res://assets/ennemies/Sprite-TENTACLE-ATTAQUE.png" type="Texture" id=4]
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 4 )
+region = Rect2( 0, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=15]
+atlas = ExtResource( 4 )
+region = Rect2( 128, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=16]
+atlas = ExtResource( 4 )
+region = Rect2( 256, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=17]
+atlas = ExtResource( 4 )
+region = Rect2( 384, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=18]
+atlas = ExtResource( 4 )
+region = Rect2( 512, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=19]
+atlas = ExtResource( 4 )
+region = Rect2( 640, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 3 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 3 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 3 )
+region = Rect2( 128, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 3 )
+region = Rect2( 192, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 3 )
+region = Rect2( 256, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 3 )
+region = Rect2( 320, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 3 )
+region = Rect2( 384, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 3 )
+region = Rect2( 448, 0, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ) ],
+"loop": true,
+"name": "attack",
+"speed": 15.0
+}, {
+"frames": [ SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ), SubResource( 13 ) ],
+"loop": true,
+"name": "stun",
+"speed": 10.0
+} ]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 39.5, 117.5 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 323.002
+radius = 221.009
 
-[sub_resource type="Animation" id=3]
-resource_name = "attack"
-
-[sub_resource type="Animation" id=4]
-resource_name = "idle"
+[sub_resource type="CircleShape2D" id=20]
+radius = 221.111
 
 [node name="Tentacle" type="Area2D" groups=["enemy"]]
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Sprite" type="AnimatedSprite" parent="."]
+position = Vector2( -65, -3 )
 scale = Vector2( 4, 4 )
-texture = ExtResource( 1 )
+frames = SubResource( 5 )
+animation = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 3.5, -1.5 )
 shape = SubResource( 1 )
 
 [node name="StunTimer" type="Timer" parent="."]
+wait_time = 3.0
 
 [node name="Attackbox" type="Area2D" parent="."]
 
 [node name="Attackbox" type="CollisionShape2D" parent="Attackbox"]
 shape = SubResource( 2 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/attack = SubResource( 3 )
-anims/idle = SubResource( 4 )
+[node name="Attack" type="Area2D" parent="." groups=["enemy"]]
+
+[node name="Attack" type="CollisionShape2D" parent="Attack" groups=["enemy"]]
+modulate = Color( 1, 0, 0, 1 )
+shape = SubResource( 20 )
+disabled = true
 
 [connection signal="area_entered" from="." to="." method="_on_Tentacle_area_entered"]
+[connection signal="timeout" from="StunTimer" to="." method="_on_StunTimer_timeout"]
 [connection signal="body_entered" from="Attackbox" to="." method="_on_Attackbox_body_entered"]
+[connection signal="body_exited" from="Attackbox" to="." method="_on_Attackbox_body_exited"]

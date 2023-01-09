@@ -66,6 +66,7 @@ func roam():
 
 func _on_Attackbox_body_entered(body: Node) -> void:
 	if !is_attacking and body.is_in_group("player"):
+		$AttackAudio.play()
 		is_attacking = true
 		speed = 1200
 		motion = global_position.direction_to(player.position) * speed

@@ -20,6 +20,7 @@ texture = ExtResource( 3 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 197, 156 )
+shot_type = "blaster"
 
 [node name="BitonioNest" parent="." instance=ExtResource( 6 )]
 position = Vector2( 2530, 949 )

@@ -29,7 +29,7 @@ script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 3, 2 )
-rotation = -2.93518
+rotation = -3.18639
 scale = Vector2( 6, 6 )
 texture = ExtResource( 1 )
 flip_v = true
@@ -45,7 +45,7 @@ margin_top = -110.0
 margin_right = 1.0
 margin_bottom = -68.0
 rect_scale = Vector2( 2, 2 )
-text = "Egg get!"
+text = "+1"
 align = 1
 valign = 1
 

@@ -23,8 +23,8 @@ onready var level_objective = $LevelObjective
 
 var level_0 = "res://source/levels/Base.tscn"
 var level_1 = "res://source/levels/Level1.tscn"
-var level_2 = "todo"
-var level_3 = "todo"
+var level_2 = "res://source/levels/Level2.tscn"
+var level_3 = "res://source/levels/Level3_intro.tscn"
 
 var levels = [level_0, level_1, level_2, level_3]
 
@@ -43,10 +43,15 @@ func _on_LevelTuto_pressed() -> void:
 	selected_level = 0
 
 func _on_Level1_pressed() -> void:
-	level_name.text = missions.keys()[1]
-	level_description.text = missions.values()[1]
-	level_objective.text = objectives[1]
-	selected_level = 1
+	if Autoload.base_complete:
+		level_name.text = missions.keys()[1]
+		level_description.text = missions.values()[1]
+		level_objective.text = objectives[1]
+		selected_level = 1
+	else:
+		level_name.text = 'LOCKED'
+		level_description.text = "Visit the base first!"
+		level_objective.text = "???"
 
 func _on_Level2_pressed() -> void:
 	if Autoload.level_1_complete:
